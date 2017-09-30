@@ -22,7 +22,7 @@ char* sillyXcrypt(char* keyword, char* toXcrypt, char direction, char* file_to_r
 	unsigned char out[MD5_DIGEST_LENGTH];
 
 	// set up defaults
-	char* result = malloc(sizeof(char) * strlen(toXcrypt));
+	char* result = malloc(sizeof(char) * strlen(toXcrypt) + 1);
 
 	// compute md5sum of keyword
 	unsigned long keyword_len = strlen(keyword);

@@ -136,6 +136,7 @@ int main(int argc, char** argv)
 	{
 		printf("%s\n", XcryptedStr);
 	}
+	free(XcryptedStr);
 
 	return 0;
 }
