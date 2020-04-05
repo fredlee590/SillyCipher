@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Silly Cipher</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Silly Cipher</h1>
+
+    <form action="/" method="POST">
+        <p>Specify file to decrypt and answer questions to formulate decryption key</p>
+        <select name="file_to_decrypt" id="file_to_decrypt">
+            {% for file in files %}
+            <option value={{file}}>{{file}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <!-- TODO: generate questions based on file to decrypt -->
+        <p>Question 1</p>
+        <input type="text" name="answer1" id="answer1">
+        <br>
+        <p>Question 2</p>
+        <input type="text" name="answer2" id="answer2">
+        <br>
+        <p>Question 3</p>
+        <input type="text" name="answer3" id="answer3">
+        <br>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}
