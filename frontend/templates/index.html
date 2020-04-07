@@ -8,26 +8,33 @@
 <div class="content">
     <h1>Silly Cipher</h1>
 
+    <!-- START -->
     <form action="/" method="POST">
         <p>Specify file to decrypt and answer questions to formulate decryption key</p>
-        <select name="file_to_decrypt" id="file_to_decrypt">
-            {% for file in files %}
-            <option value={{file}}>{{file}}</option>
+        <select name="quiz_id" id="quiz_id">
+            {% for quiz in quizzes %}
+            <option value={{quiz.qid}}>{{quiz.qid}}</option>
             {% endfor %}
         </select>
         <br>
-        <!-- TODO: generate questions based on file to decrypt -->
-        <p>Question 1</p>
-        <input type="text" name="answer1" id="answer1">
         <br>
-        <p>Question 2</p>
-        <input type="text" name="answer2" id="answer2">
-        <br>
-        <p>Question 3</p>
-        <input type="text" name="answer3" id="answer3">
-        <br>
-        <br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Go To Quiz">
     </form>
+    <p>OOOOR</p>
+    <p>Upload a questions and message file to the database</p>
+    <!-- ADD -->
+    <form enctype=multipart/form-data action='/' method='POST'>
+        <p>Question File (a newline separated file of questions)</p>
+        <input type="file" name="questions_file" id="question_file">
+        <br>
+        <p>Message File (encrypted message file)</p>
+        <input type="file" name="encrypted_file" id="encrypted_file">
+        <br>
+        <br>
+        <input type="submit" value="Add Quiz">
+    </form>
+    {% if last_created %}
+        <p>Just added new quiz of ID {{ last_created }}!</p>
+    {% endif %}
 </div>
 {% endblock %}
