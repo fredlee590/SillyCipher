@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Silly Cipher</title>
+<title>Silly Cipher Quiz</title>
 {% endblock %}
 
 {% block body %}
 <div class="content">
-    <h1>Silly Cipher - Quiz {{ quiz_id }}</h1>
+    <h1>Quiz {{ quiz_id }}</h1>
 
     <form action="/quiz/{{ quiz_id }}" method="POST">
         {% for question in questions %}
@@ -15,7 +15,7 @@
         <br>
         {% endfor %}
         <br>
-        <input type="submit" value="Go To Quiz">
+        <input type="submit" value="Decrypt!">
     </form>
 </div>
 {% endblock %}
