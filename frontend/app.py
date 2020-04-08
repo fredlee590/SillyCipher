@@ -60,7 +60,12 @@ def index():
             except:
                 return "Issue deleting quiz %d" % quiz_id
         elif button_clicked == "Add Quiz":
-            new_qid = randint(1000, 9999)
+            while True:
+                new_qid = randint(1000, 9999)
+
+                if Quiz.query.filter_by(qid=new_qid).first() is None:
+                    break
+
             new_questions_file = request.files["questions_file"]
             new_encrypted_file = request.files["encrypted_file"]
 
