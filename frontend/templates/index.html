@@ -9,6 +9,7 @@
     <h1>Silly Cipher</h1>
 
     <!-- START -->
+    {% if quizzes|length > 0 %}
     <form action="/" method="POST">
         <p>Specify file to decrypt and answer questions to formulate decryption key</p>
         <select name="quiz_id" id="quiz_id">
@@ -22,6 +23,7 @@
         <input type="submit" name="button" value="Delete Quiz">
     </form>
     <p>OOOOR</p>
+    {% endif %}
     <p>Upload a questions and message file to the database</p>
     <!-- ADD -->
     <form enctype=multipart/form-data action='/' method='POST'>
