@@ -44,12 +44,22 @@ def quiz(quiz_id):
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':  # add new quiz to database
-        if request.form:
+        button_clicked = request.form["button"]
+        if button_clicked == "Go To Quiz":
             quiz_id = request.form["quiz_id"]
             quiz = Quiz.query.get_or_404(quiz_id)
             questions = quiz.questions.split('\n')
             return render_template('quiz.html', questions=questions, quiz_id=quiz_id)
-        else:
+        elif button_clicked == "Delete Quiz":
+            quiz_id = request.form["quiz_id"]
+            quiz = Quiz.query.get_or_404(quiz_id)
+            try:
+                db.session.delete(quiz)
+                db.session.commit()
+                return redirect('/')
+            except:
+                return "Issue deleting quiz %d" % quiz_id
+        elif button_clicked == "Add Quiz":
             new_qid = randint(1000, 9999)
             new_questions_file = request.files["questions_file"]
             new_encrypted_file = request.files["encrypted_file"]

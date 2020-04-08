@@ -18,7 +18,8 @@
         </select>
         <br>
         <br>
-        <input type="submit" value="Go To Quiz">
+        <input type="submit" name="button" value="Go To Quiz">
+        <input type="submit" name="button" value="Delete Quiz">
     </form>
     <p>OOOOR</p>
     <p>Upload a questions and message file to the database</p>
@@ -31,7 +32,7 @@
         <input type="file" name="encrypted_file" id="encrypted_file">
         <br>
         <br>
-        <input type="submit" value="Add Quiz">
+        <input type="submit" name="button" value="Add Quiz">
     </form>
     {% if last_created %}
         <p>Just added new quiz of ID {{ last_created }}!</p>
