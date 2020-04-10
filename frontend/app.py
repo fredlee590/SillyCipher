@@ -27,7 +27,7 @@ def quiz(quiz_id):
         answers = request.form.values()
         key = ""
         for answer in answers:
-            key += answer
+            key += answer.replace(" ", "")
         quiz = Quiz.query.get_or_404(quiz_id)
         with TemporaryDirectory() as tempdirname:
             tempfilename = path.join(tempdirname, f"{quiz_id}.txt")
