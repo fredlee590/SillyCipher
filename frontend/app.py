@@ -21,45 +21,47 @@ class Quiz(db.Model):
     def __repr__(self):
         return '<Quiz %r>' % self.qid
 
-@app.route('/quiz/<int:quiz_id>', methods=['POST', 'GET'])
-def quiz(quiz_id):
-    if request.method == 'POST':
-        answers = request.form.values()
-        key = ""
-        for answer in answers:
-            key += answer.replace(" ", "")
-        quiz = Quiz.query.get_or_404(quiz_id)
-        with TemporaryDirectory() as tempdirname:
-            tempfilename = path.join(tempdirname, f"{quiz_id}.txt")
-            with open(tempfilename, 'w') as f:
-                f.write(quiz.message)
-            try:
-                out = run(["sillyCipher", "-k", key, "-d", "-f", tempfilename], stdout=PIPE)
-            except Exception as e:
-                return f"Something bad happened: {e}"
+@app.route('/display/<int:quiz_id>', methods=['POST'])
+def display(quiz_id):
+    answers = request.form.values()
+    key = ""
+    for answer in answers:
+        key += answer.replace(" ", "")
+    quiz = Quiz.query.get_or_404(quiz_id)
+    with TemporaryDirectory() as tempdirname:
+        tempfilename = path.join(tempdirname, f"{quiz_id}.txt")
+        with open(tempfilename, 'w') as f:
+            f.write(quiz.message)
+        try:
+            out = run(["sillyCipher", "-k", key, "-d", "-f", tempfilename], stdout=PIPE)
+        except Exception as e:
+            return f"Something bad happened: {e}"
 
-        decrypted_str = out.stderr if out.stderr else out.stdout
-        return render_template('display.html', message=decrypted_str.decode('utf-8').split('\n'))
+    decrypted_str = out.stderr if out.stderr else out.stdout
+    return render_template('display.html', message=decrypted_str.decode('utf-8').split('\n'))
+
+@app.route('/quiz', methods=['POST'])
+def quiz():
+    button_clicked = request.form["button"]
+    quiz_id = request.form["quiz_id"]
+    quiz = Quiz.query.get_or_404(quiz_id)
+    if button_clicked == "Go To Quiz":
+        questions = quiz.questions.split('\n')
+        return render_template('quiz.html', questions=questions, quiz_id=quiz_id)
+    elif button_clicked == "Delete Quiz":
+        try:
+            db.session.delete(quiz)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "Issue deleting quiz %d" % quiz_id
+    else:
+        return "UNKNOWN BUTTON"
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':  # add new quiz to database
-        button_clicked = request.form["button"]
-        if button_clicked == "Go To Quiz":
-            quiz_id = request.form["quiz_id"]
-            quiz = Quiz.query.get_or_404(quiz_id)
-            questions = quiz.questions.split('\n')
-            return render_template('quiz.html', questions=questions, quiz_id=quiz_id)
-        elif button_clicked == "Delete Quiz":
-            quiz_id = request.form["quiz_id"]
-            quiz = Quiz.query.get_or_404(quiz_id)
-            try:
-                db.session.delete(quiz)
-                db.session.commit()
-                return redirect('/')
-            except:
-                return "Issue deleting quiz %d" % quiz_id
-        elif button_clicked == "Add Quiz":
+        if request.form["button"] == "Add Quiz":
             while True:
                 new_qid = randint(1000, 9999)
 
@@ -81,6 +83,8 @@ def index():
                 return "Issue occurred adding quiz"
 
             return redirect('/')
+        else:
+            return "UNKNOWN BUTTON"
     else:
         quizzes = Quiz.query.order_by(Quiz.qid).all()
         last_created = None if not len(quizzes) else Quiz.query.order_by(Quiz.date_created)[-1].qid

@@ -10,7 +10,7 @@
 
     <!-- START -->
     {% if quizzes|length > 0 %}
-    <form action="/" method="POST">
+    <form action="/quiz" method='POST'>
         <h2>Manage Registered Quizzes</h2>
         <p>Specify message to delete or decrypt. If the latter, be prepared to answer questions to formulate decryption key to use.</p>
         <select name="quiz_id" id="quiz_id">

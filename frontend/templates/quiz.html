@@ -8,7 +8,7 @@
 <div class="content">
     <h1>Quiz {{ quiz_id }}</h1>
 
-    <form action="/quiz/{{ quiz_id }}" method="POST">
+    <form action="/display/{{ quiz_id }}" method="POST">
         {% for question in questions %}
         <p>{{question}}</p>
         <input type="text" name="{{question}}" id="{{question}}">
