@@ -23,14 +23,15 @@
         <input type="submit" name="button" value="Go To Quiz">
         <input type="submit" name="button" value="Delete Quiz">
     </form>
+    <br>
     {% endif %}
     <h2>Register New Quiz</h2>
-    <p>Upload a questions and message file to use to create and add a new Quiz the database.</p>
+    <p>Upload a newline separated questions file and Silly Cipher encrypted message file to register a new Quiz.</p>
     <form enctype=multipart/form-data action='/' method='POST'>
-        <p>Question File (a newline separated file of questions)</p>
+        <h3>Question File</h3>
         <input type="file" name="questions_file" id="question_file">
         <br>
-        <p>Message File (encrypted message file)</p>
+        <h3>Message File</h3>
         <input type="file" name="encrypted_file" id="encrypted_file">
         <br>
         <br>
