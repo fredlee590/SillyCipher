@@ -10,7 +10,7 @@
 
     <!-- START -->
     {% if quizzes|length > 0 %}
-    <form action="/quiz" method='POST'>
+    <form action="/" method='POST'>
         <h2>Manage Registered Quizzes</h2>
         <p>Specify message to delete or decrypt. If the latter, be prepared to answer questions to formulate decryption key to use.</p>
         <select name="quiz_id" id="quiz_id">
@@ -20,8 +20,8 @@
         </select>
         <br>
         <br>
-        <input type="submit" name="button" value="Go To Quiz">
-        <input type="submit" name="button" value="Delete Quiz">
+        <button type="submit" class="btn btn-outline-success" name="button" value="Go To Quiz">Go To Quiz</button>
+        <button type="submit" class="btn btn-outline-danger" name="button" value="Delete Quiz">Delete Quiz</button>
     </form>
     <br>
     {% endif %}
@@ -35,7 +35,7 @@
         <input type="file" name="encrypted_file" id="encrypted_file">
         <br>
         <br>
-        <input type="submit" name="button" value="Add Quiz">
+        <button type="submit" class="btn btn-outline-success" name="button" value="Add Quiz">Add Quiz</button>
     </form>
     {% if last_created %}
         <p>Last added quiz ID: {{ last_created }}</p>

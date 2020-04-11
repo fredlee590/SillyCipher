@@ -11,8 +11,12 @@
     {% for line in message %}
         <p>{{ line }}</p>
     {% endfor %}
+    <form action='/quiz/{{ quiz_id }}'>
+        <button type="submit" class="btn btn-outline-danger">Try Again!</button>
+    </form>
+    <br>
     <form action="/">
-        <input type="submit" value="Back To Start">
+        <button type="submit" class="btn btn-outline-success">Back To Start!</button>
     </form>
 </div>
 {% endblock %}

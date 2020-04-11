@@ -21,7 +21,7 @@ class Quiz(db.Model):
     def __repr__(self):
         return '<Quiz %r>' % self.qid
 
-@app.route('/display/<int:quiz_id>', methods=['POST'])
+@app.route('/display/<int:quiz_id>', methods=['GET', 'POST'])
 def display(quiz_id):
     answers = request.form.values()
     key = ""
@@ -38,30 +38,31 @@ def display(quiz_id):
             return f"Something bad happened: {e}"
 
     decrypted_str = out.stderr if out.stderr else out.stdout
-    return render_template('display.html', message=decrypted_str.decode('utf-8').split('\n'))
+    return render_template('display.html', message=decrypted_str.decode('utf-8').split('\n'), quiz_id=quiz_id)
 
-@app.route('/quiz', methods=['POST'])
-def quiz():
-    button_clicked = request.form["button"]
-    quiz_id = request.form["quiz_id"]
+@app.route('/quiz/<int:quiz_id>')
+def quiz(quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
-    if button_clicked == "Go To Quiz":
-        questions = quiz.questions.split('\n')
-        return render_template('quiz.html', questions=questions, quiz_id=quiz_id)
-    elif button_clicked == "Delete Quiz":
-        try:
-            db.session.delete(quiz)
-            db.session.commit()
-            return redirect('/')
-        except:
-            return "Issue deleting quiz %d" % quiz_id
-    else:
-        return "UNKNOWN BUTTON"
+    return render_template('quiz.html', questions=quiz.questions.split('\n'), quiz_id=quiz_id)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':  # add new quiz to database
-        if request.form["button"] == "Add Quiz":
+        button_clicked = request.form["button"]
+        if button_clicked in ["Go To Quiz", "Delete Quiz"]:
+            quiz_id = request.form["quiz_id"]
+            quiz = Quiz.query.get_or_404(quiz_id)
+
+        if button_clicked == "Go To Quiz":
+            return redirect(f'/quiz/{quiz_id}')
+        elif button_clicked == "Delete Quiz":
+            try:
+                db.session.delete(quiz)
+                db.session.commit()
+                return redirect('/')
+            except:
+                return "Issue deleting quiz %d" % quiz_id
+        elif button_clicked == "Add Quiz":
             while True:
                 new_qid = randint(1000, 9999)
 
