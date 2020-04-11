@@ -10,11 +10,10 @@
 
     <form action="/display/{{ quiz_id }}" method="POST">
         {% for question in questions %}
-        <p>{{question}}</p>
-        <input type="text" name="{{question}}" id="{{question}}">
+        <h4>{{question}}</h4>
+        <input type="text" class="form-control" name="{{question}}" id="{{question}}" style="width:50%">
         <br>
         {% endfor %}
-        <br>
         <button type="submit" class="btn btn-outline-success">Decrypt!</button>
     </form>
     <br>
