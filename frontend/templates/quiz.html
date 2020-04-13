@@ -5,20 +5,25 @@
 {% endblock %}
 
 {% block body %}
-<div class="content">
-    <h1>Quiz {{ quiz_id }}</h1>
+<!--<div class="content">-->
+<div class="container">
+    <h1 class="text-center">Quiz {{ quiz_id }}</h1>
 
-    <form action="/display/{{ quiz_id }}" method="POST">
-        {% for question in questions %}
-        <h4>{{question}}</h4>
-        <input type="text" class="form-control" name="{{question}}" id="{{question}}" style="width:50%">
+    <div class="bg-light">
         <br>
-        {% endfor %}
-        <button type="submit" class="btn btn-outline-success">Decrypt!</button>
-    </form>
-    <br>
-    <form action="/">
-        <button type="submit" class="btn btn-outline-danger">Abort!</button>
-    </form>
+        <form action="/display/{{ quiz_id }}" method="POST" style="padding-left:5%;padding-right:5%">
+            {% for question in questions %}
+            <h4>{{question}}</h4>
+            <input type="text" class="form-control" name="{{question}}" id="{{question}}">
+            <br>
+            {% endfor %}
+            <button type="submit" class="btn btn-outline-success">Decrypt!</button>
+        </form>
+        <br>
+        <form action="/" style="padding-left:5%;padding-right:5%">
+            <button type="submit" class="btn btn-outline-danger">Abort!</button>
+        </form>
+        <br>
+    </div>
 </div>
 {% endblock %}

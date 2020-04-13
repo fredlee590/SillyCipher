@@ -5,42 +5,52 @@
 {% endblock %}
 
 {% block body %}
-<div class="content">
-    <h1>Silly Cipher</h1>
+<div class="container">
+    <h1 class="text-center">Silly Cipher</h1>
 
     <!-- START -->
     {% if quizzes|length > 0 %}
-    <form action="/" method='POST'>
+    <!--<div class="bg-light" style="align:center">-->
+    <div class="bg-light" style="padding-left:5%;padding-right:5%">
+        <br>
         <h2>Manage Registered Quizzes</h2>
         <p>Specify message to delete or decrypt. If the latter, be prepared to answer questions to formulate decryption key to use.</p>
-        <select name="quiz_id" id="quiz_id" class="form-control" style="width:max-content">
-            {% for quiz in quizzes %}
-            <option value={{quiz.qid}}>{{quiz.qid}}</option>
-            {% endfor %}
-        </select>
+        <form action="/" method='POST'>
+            <select name="quiz_id" id="quiz_id" class="form-control" style="width:max-content">
+                {% for quiz in quizzes %}
+                <option value={{quiz.qid}}>{{quiz.qid}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit" class="btn btn-outline-success" name="button" value="Go To Quiz">Go To Quiz</button>
+            <button type="submit" class="btn btn-outline-danger" name="button" value="Delete Quiz">Delete Quiz</button>
+        </form>
         <br>
-        <button type="submit" class="btn btn-outline-success" name="button" value="Go To Quiz">Go To Quiz</button>
-        <button type="submit" class="btn btn-outline-danger" name="button" value="Delete Quiz">Delete Quiz</button>
-    </form>
+    </div>
     <br>
     {% endif %}
-    <h2>Register New Quiz</h2>
-    <p>Upload a newline separated questions file and Silly Cipher encrypted message file to register a new Quiz.</p>
-    <form enctype=multipart/form-data action='/' method='POST'>
-        <h3>Question File</h3>
-        <div class="custom-file" style="width:50%">
-            <input type="file" class="custom-file-input" name="questions_file" id="question_file">
-            <label class="custom-file-label" for="questions_file">Choose File</label>
-        </div>
-        <h3>Message File</h3>
-        <div class="custom-file" style="width:50%">
-            <input type="file" class="custom-file-input" name="encrypted_file" id="encrypted_file">
-            <label class="custom-file-label" for="encrypted_file">Choose File</label>
-        </div>
+    <div class="bg-light" style="padding-left:5%;padding-right:5%">
         <br>
+        <h2>Register New Quiz</h2>
+        <p>Upload a newline separated questions file and Silly Cipher encrypted message file to register a new Quiz.</p>
+        <form enctype=multipart/form-data action='/' method='POST'>
+            <h3>Question File</h3>
+            <div class="custom-file" style="width:50%">
+                <input type="file" class="custom-file-input" name="questions_file" id="question_file">
+                <label class="custom-file-label" for="questions_file">Choose File</label>
+            </div>
+            <h3>Message File</h3>
+            <div class="custom-file" style="width:50%">
+                <input type="file" class="custom-file-input" name="encrypted_file" id="encrypted_file">
+                <label class="custom-file-label" for="encrypted_file">Choose File</label>
+            </div>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-outline-success" name="button" value="Add Quiz">Add Quiz</button>
+        </form>
         <br>
-        <button type="submit" class="btn btn-outline-success" name="button" value="Add Quiz">Add Quiz</button>
-    </form>
+    </div>
+    <br>
     {% if last_created %}
         <p>Last added quiz ID: {{ last_created }}</p>
     {% endif %}

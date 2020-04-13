@@ -5,12 +5,17 @@
 {% endblock %}
 
 {% block body %}
-<div class="content">
-    <h1>Message</h1>
+<div class="container">
+    <h1 class="text-center">Message</h1>
 
-    {% for line in message %}
-        <p>{{ line }}</p>
-    {% endfor %}
+    <div class="bg-light" style="padding-left:5%;padding-right:5%">
+        <br>
+        {% for line in message %}
+            <p>{{ line }}</p>
+        {% endfor %}
+        <br>
+    </div>
+    <br>
     <form action='/quiz/{{ quiz_id }}'>
         <button type="submit" class="btn btn-outline-danger">Try Again!</button>
     </form>
