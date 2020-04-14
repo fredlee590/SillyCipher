@@ -9,7 +9,7 @@
 <div class="container">
     <h1 class="text-center">Quiz {{ quiz_id }}</h1>
 
-    <div class="bg-light">
+    <div class="bg-light" style="border-radius:20px">
         <br>
         <form action="/display/{{ quiz_id }}" method="POST" style="padding-left:5%;padding-right:5%">
             {% for question in questions %}

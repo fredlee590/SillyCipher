@@ -8,20 +8,19 @@
 <div class="container">
     <h1 class="text-center">Message</h1>
 
-    <div class="bg-light" style="padding-left:5%;padding-right:5%">
+    <div class="bg-light" style="border-radius:20px;padding-left:5%;padding-right:5%">
         <br>
         {% for line in message %}
             <p>{{ line }}</p>
         {% endfor %}
+        <form action='/quiz/{{ quiz_id }}'>
+            <button type="submit" class="btn btn-outline-danger">Try Again!</button>
+        </form>
+        <br>
+        <form action="/">
+            <button type="submit" class="btn btn-outline-success">Back To Start!</button>
+        </form>
         <br>
     </div>
-    <br>
-    <form action='/quiz/{{ quiz_id }}'>
-        <button type="submit" class="btn btn-outline-danger">Try Again!</button>
-    </form>
-    <br>
-    <form action="/">
-        <button type="submit" class="btn btn-outline-success">Back To Start!</button>
-    </form>
 </div>
 {% endblock %}
