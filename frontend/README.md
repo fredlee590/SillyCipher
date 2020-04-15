@@ -24,9 +24,14 @@ You are now ready to start the web app.
 
 To add a message to decrypt, simply
 1. Write your message to a file
-1. Encrypt it with the `sillyCipher` utility with a custom keyword
-1. Save this file to the `messages` directory
-1. TODO: Add the ability to customize questions per message to decrypt
+1. Encrypt it with the `sillyCipher` utility with a custom keyword. Save to a file.
+1. Write a newline-separated file of questions. For best results, the answers to these questions should make up your keyword. Save this file.
+1. Navigate to the SillyCipher web app in a browser.
+1. Upload the Questions and Message files to their corresponding elements
+1. Click the Add Quiz button
+1. Take note of the randomly assigned Quiz ID of the most recently added quiz at the bottom of the page
+
+You are now ready to answer its questions!
 
 ## Start
 
