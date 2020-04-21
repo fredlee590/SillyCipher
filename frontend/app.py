@@ -5,6 +5,7 @@ from os import urandom, path
 from random import randint
 from tempfile import TemporaryDirectory
 from datetime import datetime
+import argparse
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sillyCipher.db'
@@ -91,6 +92,16 @@ def index():
         last_created = None if not len(quizzes) else Quiz.query.order_by(Quiz.date_created)[-1].qid
         return render_template('index.html', quizzes=quizzes, last_created=last_created)
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Silly Cipher front end web app")
+
+    parser.add_argument("-c", "--certs", action='store_true', help="Run with local certs")
+
+    return parser.parse_args()
+
 if __name__ == "__main__":
+    args = parse_args()
+
     db.create_all()
-    app.run(debug=True)
+    ssl_context = ('cert.pem', 'key.pem') if args.certs else None
+    app.run(debug=True, ssl_context=ssl_context)
