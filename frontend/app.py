@@ -36,7 +36,8 @@ def display(quiz_id):
         try:
             out = run(["sillyCipher", "-k", key, "-d", "-f", tempfilename], stdout=PIPE)
         except Exception as e:
-            return f"Something bad happened: {e}"
+            error_msg = f"Error occurred running Silly Cipher: {e.message}"
+            return render_template('error.html', error_msg=error_msg)
 
     decrypted_str = out.stderr if out.stderr else out.stdout
     return render_template('display.html', message=decrypted_str.decode('utf-8').split('\n'), quiz_id=quiz_id)
@@ -61,8 +62,10 @@ def index():
                 db.session.delete(quiz)
                 db.session.commit()
                 return redirect('/')
-            except:
-                return "Issue deleting quiz %d" % quiz_id
+            except Exception as e:
+                error_msg = f"Issue deleting quiz {quiz_id}: {e.message}"
+                return render_template('error.html', error_msg=error_msg)
+
         elif button_clicked == "Add Quiz":
             while True:
                 new_qid = randint(1000, 9999)
@@ -78,15 +81,19 @@ def index():
                 new_encrypted_str = new_encrypted_file.stream.read().decode('utf-8')
 
                 new_quiz = Quiz(qid=new_qid, questions=new_questions_str, message=new_encrypted_str)
+            else:
+                error_msg = "Missing Files! Make sure you upload both a questions and message file."
+                return render_template('error.html', error_msg=error_msg)
             try:
                 db.session.add(new_quiz)
                 db.session.commit()
-            except:
-                return "Issue occurred adding quiz"
+            except Exception as e:
+                error_msg = f"Issue adding quiz {quiz_id}: {e.message}"
+                return render_template('error.html', error_msg=error_msg)
 
             return redirect('/')
         else:
-            return "UNKNOWN BUTTON"
+            return render_template('error', error_msg="THAT WAS AN UNKNOWN BUTTON YOU CLICKED")
     else:
         quizzes = Quiz.query.order_by(Quiz.qid).all()
         last_created = None if not len(quizzes) else Quiz.query.order_by(Quiz.date_created)[-1].qid
