@@ -11,7 +11,7 @@
 
     <div class="bg-light" style="border-radius:20px">
         <br>
-        <form action="/display/{{ quiz_id }}" method="POST" style="padding-left:5%;padding-right:5%">
+        <form action="/display/{{ quiz_id }}" method="POST" style="padding-left:2%;padding-right:2%">
             {% for question in questions %}
             <h4>{{question}}</h4>
             <input type="text" class="form-control" name="{{question}}" id="{{question}}">
@@ -20,7 +20,7 @@
             <button type="submit" class="btn btn-outline-success">Decrypt!</button>
         </form>
         <br>
-        <form action="/" style="padding-left:5%;padding-right:5%">
+        <form action="/" style="padding-left:2%;padding-right:2%">
             <button type="submit" class="btn btn-outline-danger">Abort!</button>
         </form>
         <br>
