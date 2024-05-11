@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Silly Cipher Error</title>
+{% endblock %}
+
+{% block body %}
+<!--<div class="content">-->
+<div class="container">
+    <h1 class="text-center">Error!</h1>
+
+    <div class="bg-light" style="border-radius:20px;padding-left:2%;padding-right:2%">
+    <br>
+    <p>{{ error_msg }}</p>
+    <form action="/">
+        <button type="submit" class="btn btn-outline-success">Back To Start!</button>
+    </form>
+    <br>
+    </div>
+</div>
+{% endblock %}
