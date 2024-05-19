@@ -12,12 +12,10 @@ void usage(void)
 	printf("SillyCipher is a command line utility that encrypts strings with dynamically generated Vigenère keys.\n");
 	printf("\n");
 	printf("Usage:\n");
-	// TODO: make keyword positional argument
 	// TODO: make MESSAGE into MESSAGE|FILE
-	printf("    sillycipher [OPTIONS] -k KEYWORD MESSAGE\n");
+	printf("    sillycipher [OPTIONS] KEYWORD MESSAGE\n");
  	printf("\n");
  	printf("Options:\n");
-	printf("    -k, --keyword KEYWORD   Specify keyword for this operation, from which the Vigenère key will be generated (required).\n");
 	printf("    -d, --decrypt           Decrypts input MESSAGE instead of encrypting.\n");
 	printf("    -f, --file              File from which to read in source text\n");
 	printf("    -o, --output            File to which to write resultant text\n");
@@ -30,13 +28,11 @@ int main(int argc, char** argv)
 	int option_index = 0;
 
 	int curarg = 1;
-	char* keyword = NULL;
 	char direction = ENCRYPT;
 	char* file_to_read = NULL;
 	char* file_to_write = NULL;
 
 	static struct option long_options[] = {
-		{"keyword",	required_argument,	0,	'k'	},
 		{"decrypt",	no_argument,		0,	'd'	},
 		{"file",	required_argument,	0,	'f'	},
 		{"output",	required_argument,	0,	'o'	},
@@ -45,19 +41,10 @@ int main(int argc, char** argv)
 	};
 
 	// process options
-	while((opt = getopt_long(argc, argv, "k:df:o:h", long_options, &option_index)) != -1)
+	while((opt = getopt_long(argc, argv, "df:o:h", long_options, &option_index)) != -1)
 	{
 		switch(opt)
 		{
-			case 'k':
-				// assign keyword
-				keyword = optarg;
-				curarg++; // too many args?
-				break;
-			case 'h':
-				// help
-				usage();
-				return 0;
 			case 'd':
 				// decrypt instead of default encrypt
 				direction = DECRYPT;
@@ -72,6 +59,10 @@ int main(int argc, char** argv)
 				file_to_write = optarg;
 				curarg++;
 				break;
+			case 'h':
+				// help
+				usage();
+				return 0;
 			default:
 				break;
 		}
@@ -79,6 +70,7 @@ int main(int argc, char** argv)
 		curarg++; // too many args?
 	}
 
+	char* keyword = argv[curarg++];
 	if(!keyword)
 	{
 		fputs("Keyword from which to generate Vigenère key required!\n", stderr);
