@@ -7,15 +7,21 @@
 #include <getopt.h>
 #include "sillyCipherFunc.h"
 
-void printHelp()
+void usage(void)
 {
+	printf("SillyCipher is a command line utility that encrypts strings with dynamically generated Vigenère keys.\n");
 	printf("\n");
-	printf("SillyCipher is a fun project to quickly encrypt strings\n");
-	printf("\n");
-	printf("It was originally conceived for simple, single words like passwords, but was later adapted to\n");
-	printf("encrypt files.\n");
 	printf("Usage:\n");
-	printf("\tHahahahaha You didn't think it would be that easy, did you!?\n");
+	// TODO: make keyword positional argument
+	// TODO: make MESSAGE into MESSAGE|FILE
+	printf("    sillycipher [OPTIONS] -k KEYWORD MESSAGE\n");
+ 	printf("\n");
+ 	printf("Options:\n");
+	printf("    -k, --keyword KEYWORD   Specify keyword for this operation, from which the Vigenère key will be generated (required).\n");
+	printf("    -d, --decrypt           Decrypts input MESSAGE instead of encrypting.\n");
+	printf("    -f, --file              File from which to read in source text\n");
+	printf("    -o, --output            File to which to write resultant text\n");
+	printf("    -h, --help              Print this help\n");
 }
 
 int main(int argc, char** argv)
@@ -30,16 +36,16 @@ int main(int argc, char** argv)
 	char* file_to_write = NULL;
 
 	static struct option long_options[] = {
-		{"decrypt",	no_argument,		0,	'd'	},
 		{"keyword",	required_argument,	0,	'k'	},
-		{"help",	no_argument,		0,	'h'	},
+		{"decrypt",	no_argument,		0,	'd'	},
 		{"file",	required_argument,	0,	'f'	},
 		{"output",	required_argument,	0,	'o'	},
+		{"help",	no_argument,		0,	'h'	},
 		{0,		0,			0,	0	}
 	};
 
 	// process options
-	while((opt = getopt_long(argc, argv, "dk:f:o:h", long_options, &option_index)) != -1)
+	while((opt = getopt_long(argc, argv, "k:df:o:h", long_options, &option_index)) != -1)
 	{
 		switch(opt)
 		{
@@ -50,7 +56,7 @@ int main(int argc, char** argv)
 				break;
 			case 'h':
 				// help
-				printHelp();
+				usage();
 				return 0;
 			case 'd':
 				// decrypt instead of default encrypt
@@ -75,9 +81,9 @@ int main(int argc, char** argv)
 
 	if(!keyword)
 	{
-		printf("Haha you suck!\n");
+		fputs("Keyword from which to generate Vigenère key required!\n", stderr);
 
-		return 0;
+		return 1;
 	}
 
 	char* toXcrypt;
@@ -87,7 +93,7 @@ int main(int argc, char** argv)
 
 		if(curarg != argc)
 		{
-			printf("LOL nope!\n");
+			fputs("Additional arguments unexpectedly detected!\n", stderr);
 			return 2;
 		}
 	}
