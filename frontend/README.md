@@ -35,10 +35,10 @@ You are now ready to answer its questions!
 
 ## Start
 
-To start the web app, simply execute the Python script with no arguments.
+Start the web app, through the flask utility.
 
 ```
-python3 app.py
+flask --app app.py run
 ```
 
 ## View

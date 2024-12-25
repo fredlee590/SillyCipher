@@ -9,8 +9,9 @@ import argparse
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sillyCipher.db'
-db = SQLAlchemy(app)
 
+db = SQLAlchemy()
+db.init_app(app)
 
 # TODO: create database of key questions and ciphertext: Quizzes
 class Quiz(db.Model):
@@ -21,6 +22,9 @@ class Quiz(db.Model):
 
     def __repr__(self):
         return '<Quiz %r>' % self.qid
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/display/<int:quiz_id>', methods=['GET', 'POST'])
 def display(quiz_id):
@@ -34,7 +38,7 @@ def display(quiz_id):
         with open(tempfilename, 'w') as f:
             f.write(quiz.message)
         try:
-            out = run(["sillyCipher", "-k", key, "-d", "-f", tempfilename], stdout=PIPE)
+            out = run(["sillyCipher", "-d", "-f", tempfilename, key], stdout=PIPE)
         except Exception as e:
             error_msg = f"Error occurred running Silly Cipher: {e.message}"
             return render_template('error.html', error_msg=error_msg)
@@ -95,8 +99,8 @@ def index():
         else:
             return render_template('error', error_msg="THAT WAS AN UNKNOWN BUTTON YOU CLICKED")
     else:
-        quizzes = Quiz.query.order_by(Quiz.qid).all()
-        last_created = None if not len(quizzes) else Quiz.query.order_by(Quiz.date_created)[-1].qid
+        quizzes = Quiz.query.order_by(Quiz.date_created).all()
+        last_created = None if not len(quizzes) else quizzes[-1].qid
         return render_template('index.html', quizzes=quizzes, last_created=last_created)
 
 def parse_args():
@@ -105,10 +109,3 @@ def parse_args():
     parser.add_argument("-c", "--certs", action='store_true', help="Run with local certs")
 
     return parser.parse_args()
-
-if __name__ == "__main__":
-    args = parse_args()
-
-    db.create_all()
-    ssl_context = ('cert.pem', 'key.pem') if args.certs else None
-    app.run(debug=True, ssl_context=ssl_context)
