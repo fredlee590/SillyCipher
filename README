@@ -1,3 +1,0 @@
-Requires package libssl-dev to compile
-
-Usage: ./sillyCipher -k <keyword> [-d] [-f <file to encrypt or decrypt>] [-o <file to output encrypted or decrypted string to>] [<string to encrypt or decrypt>]
