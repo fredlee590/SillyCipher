@@ -38,7 +38,7 @@ You are now ready to answer its questions!
 Start the web app, through the flask utility.
 
 ```
-flask --app app.py run
+FLASK_APP=app.py flask run
 ```
 
 ## View
